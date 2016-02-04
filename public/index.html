@@ -1,10 +1,82 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>CSU Clicker</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="materialize/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+
+<body>
+  <nav class="green" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">CSU Clicker</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Login</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Login</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center blue-text">Start Portal</h1>
+    </div>
+  </div>
+  <br><br>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+          <div class="col s12 m5 center">
+            <a href="#" id="download-button" class="btn-large waves-effect waves-light blue">Student</a>
+          </div>
+
+          <div class="col s12 m2 center">
+            <p></p>
+          </div>
+
+          <div class="col s12 m5 center">
+            <a href="#" id="download-button" class="btn-large waves-effect waves-light blue">Teacher</a>
+          </div>
+      </div>
+    </div><!--end section-->
+  </div><!--end container-->
+
+<!--FOOTER-->
+  <footer class="page-footer green">
+    <div class="container">
+      <div class="row">
+
+        <div class="col s12">
+          <h5 class="white-text">Bio</h5>
+          <p class="grey-text text-lighten-4">We are a group of college students working on our senior project to make physical, over-priced clickers a thing of the past.</p>
+        </div>
+
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="white-text text-darken-3" href="#">CIS485 Group 4 - 2016</a>
+      </div>
+    </div>
+  </footer>
+<!--END FOOTER-->
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="../../bin/materialize.js"></script>
+  <script src="js/init.js"></script>
+
+  </body>
+</html>
