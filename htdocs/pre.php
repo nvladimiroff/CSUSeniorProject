@@ -27,7 +27,7 @@ spl_autoload_register('RecipeParser_Autoload');*/
 session_start();
 if(!empty($_SESSION['username'])) {
     $tmp__user = new User();
-    $tmp__user->find($_SESSION['userId']);
+    $tmp__user->find($_SESSION['username']);
     $_user = $tmp__user;
 } else $_user = null;
 
