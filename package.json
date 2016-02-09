@@ -19,5 +19,9 @@
   "homepage": "https://github.com/nvladimiroff/CSUSeniorProject#readme",
   "devDependencies": {
     "express": "^4.13.4"
+  },
+  "dependencies": {
+    "express-session": "^1.13.0",
+    "mustache-express": "^1.2.2"
   }
 }
