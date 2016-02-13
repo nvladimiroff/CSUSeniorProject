@@ -25,6 +25,10 @@ app.get('/test', (req, res) => {
   res.render('test', { name: "Nick Vladimiroff", classname: "CIS 484", views: req.session.views });
 });
 
+app.get('/', (req, res) => {
+    res.render('index', {});
+});
+
 app.listen(process.env.PORT, () => {
   console.log("http://localhost:" + process.env.PORT + "/");
 });
