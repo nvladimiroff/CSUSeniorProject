@@ -29,6 +29,10 @@ app.get('/', (req, res) => {
     res.render('index', {});
 });
 
+app.get('/student', (req, res) => {
+    res.render('student', {});
+});
+
 app.listen(process.env.PORT, () => {
   console.log("http://localhost:" + process.env.PORT + "/");
 });
