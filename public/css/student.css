@@ -1,25 +1,37 @@
+html {
+  height: 100%;
+}
+
 body {
+  height: 100%;
   background-color: #4caf50;
 }
 
 .container {
-  min-height: 600px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.box {
-  min-width: 300px;
-}
-
 #code {
-  width: 300px;
   font-size: 2em;
   border: 1px solid white;
   border-radius: 25px;
   padding: 25px;
   transition: box-shadow 0.7s ease-in-out;
+}
+
+@media (min-width: 400px) {
+  #code {
+    width: 300px;
+  }
+}
+@media (max-width: 400px) {
+  #code {
+    width: 200px;
+    font-size: 1.5em;
+  }
 }
 
 #code:focus {
