@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
         associate: function(models) {
-          Answer.belongsTo(models.Question, {foreignKey: 'question_id'})
+          Answer.belongsTo(models.Question)
         }
     },
     timestamps: false,
