@@ -20,7 +20,6 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var sequelize = new Sequelize('clicker', 'root', 'root', {host: 'localhost', port: 8889});
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -35,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // required for passport
+// Great secret
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -45,7 +45,7 @@ require('./routes/index')(app, passport);
 require('./routes/users')(app, passport);
 require('./routes/questionsets')(app);
 require('./routes/questions')(app);
-require('./config/passport')(passport); 
+require('./config/passport')(passport);
 //require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 

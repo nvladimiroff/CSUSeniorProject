@@ -19,11 +19,11 @@ module.exports = function(app, passport) {
             if(err){
               return next(err);
             }
-            return res.send("success");        
+            return res.send("success");
           });
       })(req, res, next);
   });
-  
+
   app.get('/users', function(req, res, next) {
       passport.authenticate('local-login', function(err, user, info) {
           if (err) {
@@ -37,11 +37,11 @@ module.exports = function(app, passport) {
             if(err){
               return next(err);
             }
-            return res.send("success");        
+            return res.send("success");
           });
       })(req, res, next);
   });
-  
+
   app.get('/users/checkUsername', function(request, response) {
     //console.log("\nREQUEST: "+JSON.stringify(stringify(request)));
     //console.log("\nRESPONSE: "+stringify(stringify(response)));
