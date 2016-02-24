@@ -182,8 +182,12 @@ function getQuestionSetList() {
                                 '</a>'+
                                 '<ul class="dropdown-menu pull-right">'+
                                     '<li>'+
+                                        '<a href="#" class="beginSession_'+obj.id+'" id="beginSessionForQuestionSet">'+
+                                            '<i class="glyphicon glyphicon-share"></i> Start Session </a>'+
+                                    '</li>'+
+                                    '<li>'+
                                         '<a href="#" class="viewQSetQ_'+obj.id+'" id="viewQuestionSetQuestions">'+
-                                            '<i class="glyphicon glyphicon-list"></i> View Questions </a>'+
+                                            '<i class="glyphicon glyphicon-edit"></i> View/Edit Questions </a>'+
                                     '</li>'+
                                     '<li>'+
                                         '<a href="#" class="editQSet_'+obj.id+'" id="editQuestionSet">'+
@@ -215,219 +219,71 @@ $(document.body).on('click', '#viewQuestionSetQuestions', function() {
         type: "GET",
         url: "/questions/question_set/"+ qs_id,
         success: function(response){
-            //var questionSets = jQuery.parseJSON(response);
             var questions = response;
             var html = "";
-            // iterate over each question and create this list item and tasks as the answers for each item
-            //$.each( questions, function( key, obj ) {
-                    html += '<div class="row">'+
+            html += '<div class="row">'+
                         '<div class="col-lg-12">'+
                             '<div class="mt-element-list">'+
                                 '<div class="mt-list-head list-todo dark">'+
                                     '<div class="list-head-title-container">'+
-                                        '<h3 class="list-title">My Projects</h3>'+
+                                        '<h3 class="list-title">Questions</h3>'+
                                         '<div class="list-head-count">'+
                                             '<div class="list-head-count-item">'+
-                                                '<i class="fa fa-check"></i> 15</div>'+
-                                            '<div class="list-head-count-item">'+
-                                                '<i class="fa fa-cog"></i> 34</div>'+
+                                                '<i class="glyphicon glyphicon-question-sign"></i> '+questions.length+'</div>'+
                                         '</div>'+
                                     '</div>'+
-                                    '<a href="javascript:;">'+
+                                    '<a href="#" class="addQuestion '+qs_id+'">'+
                                         '<div class="list-count pull-right red-mint">'+
                                             '<i class="fa fa-plus"></i>'+
                                         '</div>'+
                                     '</a>'+
                                 '</div>'+
-                                '<form id="questionSetFormData_'+qs_id+'">'+
                                 '<div class="mt-list-container list-todo">'+
                                     '<div class="list-todo-line"></div>'+
-                                    '<ul>'+
-                                        '<li class="mt-list-item">'+
-                                            '<div class="list-todo-icon bg-white">'+
-                                                '<i class="fa fa-database"></i>'+
-                                            '</div>'+
-                                            '<div class="list-todo-item dark">'+
-                                                '<a class="list-toggle-container" data-toggle="collapse" href="#task-1" aria-expanded="false">'+
-                                                    '<div class="list-toggle done uppercase">'+
-                                                        '<div class="list-toggle-title bold">Metronic Database</div>'+
-                                                        '<div class="badge badge-default pull-right bold">3</div>'+
-                                                    '</div>'+
-                                                '</a>'+
-                                                '<div class="task-list panel-collapse collapse in" id="task-1">'+
-                                                    '<ul>'+
-                                                        '<li class="task-list-item done">'+
-                                                            '<div class="task-icon">'+
-                                                                '<a href="javascript:;">'+
-                                                                    '<i class="fa fa-database"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-status">'+
-                                                                '<a class="done" href="javascript:;">'+
-                                                                    '<i class="fa fa-check"></i>'+
-                                                                '</a>'+
-                                                                '<a class="pending" href="javascript:;">'+
-                                                                    '<i class="fa fa-close"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-content">'+
-                                                                '<h4 class="uppercase bold">'+
-                                                                    '<a href="javascript:;">Database Optimization</a>'+
-                                                                '</h4>'+
-                                                                '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum gravida mauris, a tincidunt dolor porttitor eu. </p>'+
-                                                            '</div>'+
-                                                        '</li>'+
-                                                        '<li class="task-list-item">'+
-                                                            '<div class="task-icon">'+
-                                                                '<a href="javascript:;">'+
-                                                                    '<i class="fa fa-table"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-status">'+
-                                                                '<a class="done" href="javascript:;">'+
-                                                                    '<i class="fa fa-check"></i>'+
-                                                                '</a>'+
-                                                                '<a class="pending" href="javascript:;">'+
-                                                                    '<i class="fa fa-close"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-content">'+
-                                                                '<h4 class="uppercase bold">'+
-                                                                    '<a href="javascript:;">Table Sorting</a>'+
-                                                                '</h4>'+
-                                                                '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum gravida mauris, a tincidunt dolor porttitor eu. </p>'+
-                                                            '</div>'+
-                                                        '</li>'+
-                                                        '<li class="task-list-item">'+
-                                                            '<div class="task-icon">'+
-                                                                '<a href="javascript:;">'+
-                                                                    '<i class="fa fa-pencil"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-status">'+
-                                                                '<a class="done" href="javascript:;">'+
-                                                                    '<i class="fa fa-check"></i>'+
-                                                                '</a>'+
-                                                                '<a class="pending" href="javascript:;">'+
-                                                                    '<i class="fa fa-close"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-content">'+
-                                                                '<h4 class="uppercase bold">'+
-                                                                    '<a href="javascript:;">Data Entry</a>'+
-                                                                '</h4>'+
-                                                                '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum gravida mauris, a tincidunt dolor porttitor eu. </p>'+
-                                                            '</div>'+
-                                                        '</li>'+
-                                                    '</ul>'+
-                                                    '<div class="task-footer bg-grey">'+
-                                                        '<div class="row">'+
-                                                            '<div class="col-xs-12">'+
-                                                                '<a class="task-add" href="javascript:;">'+
-                                                                    '<i class="fa fa-plus"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                        '</div>'+
-                                                    '</div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</li>'+
-                                        '<li class="mt-list-item">'+
-                                            '<div class="list-todo-icon bg-white">'+
-                                                '<i class="fa fa-paint-brush"></i>'+
-                                            '</div>'+
-                                            '<div class="list-todo-item dark">'+
-                                                '<a class="list-toggle-container" data-toggle="collapse" href="#task-2" aria-expanded="false">'+
-                                                    '<div class="list-toggle done uppercase">'+
-                                                        '<div class="list-toggle-title bold">Creative Artwork</div>'+
-                                                        '<div class="badge badge-default pull-right bold">3</div>'+
-                                                    '</div>'+
-                                                '</a>'+
-                                                '<div class="task-list panel-collapse collapse" id="task-2">'+
-                                                    '<ul>'+
-                                                        '<li class="task-list-item done">'+
-                                                            '<div class="task-icon">'+
-                                                                '<a href="javascript:;">'+
-                                                                    '<i class="fa fa-file-image-o"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-status">'+
-                                                                '<a class="done" href="javascript:;">'+
-                                                                    '<i class="fa fa-check"></i>'+
-                                                                '</a>'+
-                                                                '<a class="pending" href="javascript:;">'+
-                                                                    '<i class="fa fa-close"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-content">'+
-                                                                '<h4 class="uppercase bold">'+
-                                                                    '<a href="javascript:;">Concept Design</a>'+
-                                                                '</h4>'+
-                                                                '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum gravida mauris, a tincidunt dolor porttitor eu. </p>'+
-                                                            '</div>'+
-                                                        '</li>'+
-                                                        '<li class="task-list-item done">'+
-                                                            '<div class="task-icon">'+
-                                                                '<a href="javascript:;">'+
-                                                                    '<i class="fa fa-star-half-o"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-status">'+
-                                                                '<a class="done" href="javascript:;">'+
-                                                                    '<i class="fa fa-check"></i>'+
-                                                                '</a>'+
-                                                                '<a class="pending" href="javascript:;">'+
-                                                                    '<i class="fa fa-close"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-content">'+
-                                                                '<h4 class="uppercase bold">'+
-                                                                    '<a href="javascript:;">Creative Optimization</a>'+
-                                                                '</h4>'+
-                                                                '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum gravida mauris, a tincidunt dolor porttitor eu. </p>'+
-                                                            '</div>'+
-                                                        '</li>'+
-                                                        '<li class="task-list-item">'+
-                                                            '<div class="task-icon">'+
-                                                                '<a href="javascript:;">'+
-                                                                    '<i class="fa fa-thumbs-o-up"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-status">'+
-                                                                '<a class="done" href="javascript:;">'+
-                                                                    '<i class="fa fa-check"></i>'+
-                                                                '</a>'+
-                                                                '<a class="pending" href="javascript:;">'+
-                                                                    '<i class="fa fa-close"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                            '<div class="task-content">'+
-                                                                '<h4 class="uppercase bold">'+
-                                                                    '<a href="javascript:;">Visual Proofing</a>'+
-                                                                '</h4>'+
-                                                                '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum gravida mauris, a tincidunt dolor porttitor eu. </p>'+
-                                                            '</div>'+
-                                                        '</li>'+
-                                                    '</ul>'+
-                                                    '<div class="task-footer bg-grey">'+
-                                                        '<div class="row">'+
-                                                            '<div class="col-xs-12">'+
-                                                                '<a class="task-add" href="javascript:;">'+
-                                                                    '<i class="fa fa-plus"></i>'+
-                                                                '</a>'+
-                                                            '</div>'+
-                                                        '</div>'+
-                                                    '</div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</li>'+
-                                    '</ul>'+
-                                '</div>'+
+                                    '<ul>';
+            $.each( questions, function( index, question ) {
+                html += '<li class="mt-list-item">'+
+                            '<div class="list-todo-icon bg-white">'+
+                                '<i class="glyphicon glyphicon-question-sign"></i>'+
+                            '</div>'+
+                            '<div class="list-todo-item dark">'+
+                                '<a class="list-toggle-container" data-toggle="collapse" href="#task-1" aria-expanded="false">'+
+                                    '<div class="list-toggle done uppercase">'+
+                                        '<div class="list-toggle-title bold">'+question.name+'</div>'+
+                                        '<div class="badge badge-default pull-right bold">'+question.Answers.length+'</div>'+
+                                    '</div>'+
+                                '</a>'+
+                                '<div class="task-list panel-collapse collapse" id="task-1"><ul>';
+                $.each( question.Answers, function( key, answer ) {
+                    html += '<li class="task-list-item done"><div class="task-status">';
+                    if (answer.is_valid) {
+                        html += '<span style="color:green"><i class="glyphicon glyphicon-ok-circle"></i></span>';
+                    } else {
+                        html += '<span style="color:red"><i class="glyphicon glyphicon-remove-circle"></i></span>';
+                    }
+                    html += '</div>'+
+                            '<div class="task-content">'+
+                                '<h4 class="uppercase bold">'+
+                                    '<a href="#">'+answer.name+'</a>'+
+                                '</h4>';
+                    if (answer.description) {
+                        html += '<p>'+answer.description+'</p>';
+                    }
+                    html += '</div></li>';
+                });
+                html += '</ul>'+
+                        '<div class="task-footer bg-grey">'+
+                            '<div class="row">'+
+                                '<div class="col-xs-12">'+
+                                    '<a class="task-add addAnswer '+question.id+'" href="#">'+
+                                        '<i class="fa fa-plus"></i>'+
+                                    '</a>'+
                                 '</div>'+
                             '</div>'+
                         '</div>'+
-                    '</div>';
-            //});
+                    '</div></div></li>';
+            });
+            html += '</ul></div></div></div></div>';
             bootbox.dialog({
                 title: "Question Set: "+ qs_id,
                 message: html,
