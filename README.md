@@ -3,7 +3,7 @@ Group 4's classroom clicker app
 [Google Drive](https://drive.google.com/open?id=0BwiB_LZjyFkDQ21FT1dZWG1OUUk)
 
 #### Running
-First, install [node.js](https://nodejs.org/en/) and [mysq](http://www.mysql.com) once that is installed run:
+First, install [node.js](https://nodejs.org/en/) and [mysql](http://www.mysql.com), and once that is installed run:
 
 ```
 git clone https://github.com/nvladimiroff/CSUSeniorProject.git
