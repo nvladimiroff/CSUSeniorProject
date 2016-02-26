@@ -26,9 +26,13 @@ module.exports = (app) => {
           question_id: q.id
         }
       });
-    }).then(answers => {
-      data.answers = answers;
-      console.log(data);
+    }).then(a => {
+      data.answers = {};
+      for(var i = 0; i < a.length; i++) {
+        var item = a[i];
+        data.answers[item.name] = item.description;
+      }
+
       res.render('student_question.html', data);
     });
   });
