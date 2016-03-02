@@ -27,6 +27,7 @@ body {
 
 .row {
   display: block;
+  height: 33%;
 }
 
 .answers {
@@ -47,7 +48,12 @@ body {
   font-size: 1.75em;
   padding: 10px;
   display: inline-block;
-  height: 5em;
+  /*height: 5em;*/
   margin-left: 2em;
   margin-right: 2em;
+}
+
+.answer-block:hover .letter {
+  background: #03A9F4;
+  color: black;
 }
