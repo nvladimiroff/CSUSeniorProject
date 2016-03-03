@@ -4,7 +4,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var QuestionSet = sequelize.define("QuestionSet", {
-    id:{ type: DataTypes.INTEGER, primaryKey: true },
+    id:{ type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     owner_id: DataTypes.STRING,

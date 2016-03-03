@@ -21,4 +21,38 @@ module.exports = function(app) {
           throw err;
       });
   });
+  
+  app.post('/questions', function(req, res) {
+    Question.create({
+      name: req.body.name,
+      description: req.body.description,
+      question_set_id: req.body.question_set_id/*,
+      img: req.body.img_location*/
+    }).then(function(question) {
+      Question.findAll({
+          where: {
+              id: question.id
+          },
+          include: [{ model: Answer }]
+      }).then(function(questions) {
+          res.json(question);
+      }).error(function(err) {
+          throw err;
+      });
+    }).error(function(err) {
+      res.send({msg : err});
+    });
+  });
+  
+  app.delete('/questions/:id', function(req, res) {
+    Question.destroy({
+        where: {
+          id: req.params.id
+        }
+    }).then(function(affectedrows) {
+        res.send({msg : 'success'});
+    }).error(function(err) {
+        res.send({msg : err});
+    });
+  });
 };

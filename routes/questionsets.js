@@ -45,7 +45,7 @@ module.exports = function(app) {
   app.delete('/questionsets/:id', function(req, res) {
     QuestionSet.destroy({
         where: {
-          id: request.params.id
+          id: req.params.id
         }
     }).then(function(affectedrows) {
         res.send({msg : 'success'});

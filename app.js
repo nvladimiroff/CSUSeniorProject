@@ -45,6 +45,7 @@ require('./routes/index')(app, passport);
 require('./routes/users')(app, passport);
 require('./routes/questionsets')(app);
 require('./routes/questions')(app);
+require('./routes/answers')(app);
 require('./config/passport')(passport); 
 //require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 

@@ -1,3 +1,5 @@
+
+
 module.exports = function(app, passport) {
   /* GET home page. */
   app.get('/', isLoggedIn, function(req, res, next) {
@@ -5,6 +7,16 @@ module.exports = function(app, passport) {
       user : req.user, // get the user out of session and pass to template
       bodytagclass: 'page-md',
       pagetitle: 'Profile'
+    });
+  });
+  
+  // show question session
+  app.get('/session/:id', isLoggedIn, function(req, res, next) {
+    // TODO add logic here to build session/QuestionSet model and Question/Answer model to send in response
+    res.render('session', {
+      user : req.user, // get the user out of session and pass to template
+      bodytagclass: 'page-md',
+      pagetitle: 'Question Session'
     });
   });
 
