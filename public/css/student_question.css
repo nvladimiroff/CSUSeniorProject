@@ -1,0 +1,53 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: #4caf50;
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.question-block {
+  height: 33%;
+}
+
+.question-header {
+  color: white;
+  padding: 10px;
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.row {
+  display: block;
+}
+
+.answers {
+  height: 67%;
+}
+
+.letter {
+  font-weight: 700;
+  color: #4caf50;
+  background: #212121;
+  border-radius: 12px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.answer-block {
+  font-size: 1.75em;
+  padding: 10px;
+  display: inline-block;
+  height: 5em;
+  margin-left: 2em;
+  margin-right: 2em;
+}

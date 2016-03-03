@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>CSU Clicker</title>
+  <link href="../css/student_question.css" rel="stylesheet">
+  <link href="../css/normalize.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <!-- I don't like this design at all, but we can fix it later -->
+  <div class="container">
+    <div class="question-block">
+      <h1 class="question-header">{{question}}</h1>
+    </div>
+    <div class="answers">
+      <div class="row">
+        <div class="answer-block" id="answer-a">
+          <span class="letter">A</span>
+          <span class="answer">{{answers.A}}</span>
+        </div>
+        <div class="answer-block" id="answer-b">
+          <span class="letter">B</span>
+          <span class="answer">{{answers.B}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="answer-block" id="answer-c">
+          <span class="letter">C</span>
+          <span class="answer">{{answers.C}}</span>
+        </div>
+        <div class="answer-block" id="answer-d">
+          <span class="letter">D</span>
+          <span class="answer">{{answers.D}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

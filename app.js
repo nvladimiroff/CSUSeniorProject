@@ -8,6 +8,7 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
+var cons         = require('consolidate');
 
 var Sequelize = require('sequelize');
 //var configDB = require('./config/database.js');
@@ -15,14 +16,15 @@ var Sequelize = require('sequelize');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 
 var app = express();
 
 var sequelize = new Sequelize('clicker', 'root', 'root', {host: 'localhost', port: 8889});
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+
+app.engine('jade', cons.jade);
+app.engine('html', cons.mustache);
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
@@ -35,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // required for passport
+// Great secret
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -44,9 +47,10 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./routes/index')(app, passport);
 require('./routes/users')(app, passport);
 require('./routes/questionsets')(app);
+require('./routes/student')(app);
 require('./routes/questions')(app);
 require('./routes/answers')(app);
-require('./config/passport')(passport); 
+require('./config/passport')(passport);
 //require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 
