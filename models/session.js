@@ -5,7 +5,7 @@ var uuid = require('node-uuid');
 
 module.exports = function(sequelize, DataTypes) {
   var Session = sequelize.define("Session", {
-    id:{ type: DataTypes.INTEGER, primaryKey: true },
+    id:{ type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     token: DataTypes.STRING,
     question_set_id: DataTypes.INTEGER,
     current_question_id: DataTypes.INTEGER,
