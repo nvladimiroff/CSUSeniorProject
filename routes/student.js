@@ -32,16 +32,17 @@ module.exports = (app) => {
             answers.push(item.name);
           }
           var data = {};
-          data[q.name] = answers;
+          data.answers = answers;
+          data.question = q.name;
           return data;
         });
       }));
     }).then(data => {
-      res.json(Object.assign(data));
+      res.json(data);
     });
   });
 
   app.get('/student/:id', (req, res, next) => {
-    res.render('student_question.html', data);
+    res.render('student_question.html', {});
   });
 };
