@@ -13,6 +13,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 2em;
 }
 
 .container {
@@ -50,18 +51,35 @@ body {
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
+
+  transition: box-shadow 0.4s ease-in-out;
 }
 
 .answer-block {
   font-size: 1.75em;
   padding: 10px;
   display: inline-block;
-  /*height: 5em;*/
   margin-left: 2em;
   margin-right: 2em;
+
+  /* Border isn't visible, but it's needed so the animation looks nice. */
+  border-radius: 12px;
+
+  transition: background 0.1s ease-out;
 }
 
 .answer-block:hover .letter {
+  box-shadow: 0 0 25px #03A9F4;
+}
+
+/* React sets these classes after you click an anwser. */
+
+.answer-block-selected {
   background: #03A9F4;
-  color: black;
+  transition: background 0.3s ease-in;
+}
+
+.letter-selected {
+  color: #03A9F4;
+  transition: background 0.3s ease-in;
 }
