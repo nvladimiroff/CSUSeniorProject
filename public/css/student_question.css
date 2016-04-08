@@ -55,6 +55,16 @@ body {
   transition: box-shadow 0.4s ease-in-out;
 }
 
+/* Just throw the timer in the top left.
+ * We will almost certainly need a few media queries
+ * to make this not look like ass on mobile */
+.timer {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 3em;
+}
+
 .answer-block {
   font-size: 1.75em;
   padding: 10px;

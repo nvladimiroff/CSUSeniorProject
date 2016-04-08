@@ -19,7 +19,7 @@ var StudentApp = React.createClass({
     return {
       finished: false,
       questionNum: 0,
-      timelimit: 15,
+      currentTime: this.props.timeLimit,
       questions: [{question: "Loading...", answers: ["*", "*", "*", "*"]}]
     };
   },
@@ -43,22 +43,37 @@ var StudentApp = React.createClass({
   },
 
   componentDidMount: function() {
-    /* setInterval(() => {
-      if(this.state.questionNum+1 < this.state.questions.length) {
-        this.setState({ questionNum: this.state.questionNum+1});
+    setInterval(() => {
+      if(this.state.currentTime == 0) {
+        // If the time's up, submit the answer and advance to the next question.
+        this.sendAnswer();
+        if(this.state.questionNum+1 < this.state.questions.length) {
+          this.setState({ questionNum: this.state.questionNum+1});
+          this.setState({ currentTime: this.props.timeLimit});
+        } else {
+          this.setState({ finished: true });
+        }
       } else {
-        this.setState({ finished: true });
+        this.setState({ currentTime: this.state.currentTime-1 });
       }
-    }, this.state.timelimit*1000);
-    */  },
+
+    }, 1000);
+  },
+
+  sendAnswer: function() {
+    console.log("sendAnswer: unimplmented");
+  },
 
   render: function() {
     if(!this.state.finished) {
       return (
-        <QuestionBlock
-          question={this.state.questions[this.state.questionNum].question}
-          answers={this.state.questions[this.state.questionNum].answers}
-        />
+        <div className="container">
+          <div className="timer">{this.state.currentTime}</div>
+          <QuestionBlock
+            question={this.state.questions[this.state.questionNum].question}
+            answers={this.state.questions[this.state.questionNum].answers}
+          />
+        </div>
       );
     } else {
       return (
@@ -117,6 +132,6 @@ var QuestionBlock = React.createClass({
 });
 
 ReactDOM.render(
-  <StudentApp id={2} />,
+  <StudentApp id={2} timeLimit={15} />,
   document.getElementById('content')
 );
