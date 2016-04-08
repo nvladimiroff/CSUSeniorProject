@@ -46,7 +46,6 @@ var StudentApp = React.createClass({
     setInterval(() => {
       if(this.state.currentTime == 0) {
         // If the time's up, submit the answer and advance to the next question.
-        this.sendAnswer();
         if(this.state.questionNum+1 < this.state.questions.length) {
           this.setState({ questionNum: this.state.questionNum+1});
           this.setState({ currentTime: this.props.timeLimit});
@@ -58,10 +57,6 @@ var StudentApp = React.createClass({
       }
 
     }, 1000);
-  },
-
-  sendAnswer: function() {
-    console.log("sendAnswer: unimplmented");
   },
 
   render: function() {
