@@ -42,6 +42,14 @@ module.exports = (app) => {
     });
   });
 
+  app.post('/api/teacher/:id', (req, res, next) => {
+    console.log("Answer recieved => { id: " + req.params.id +
+                                    ", questionNum: " + req.body.questionNum +
+                                    ", answer: " + req.body.answer + " }");
+
+    res.end("{}");
+  });
+
   app.get('/student/:id', (req, res, next) => {
     res.render('student_question.html', {});
   });

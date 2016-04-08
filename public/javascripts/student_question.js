@@ -47,9 +47,11 @@ var StudentApp = React.createClass({
       if(this.state.currentTime == 0) {
         // If the time's up, submit the answer and advance to the next question.
         if(this.state.questionNum+1 < this.state.questions.length) {
-          this.setState({ questionNum: this.state.questionNum+1});
           this.setState({ currentTime: this.props.timeLimit});
+          this.setState({ questionNum: this.state.questionNum+1});
         } else {
+          // Hack to get the last question to correctly send.
+          this.setState({ currentTime: 0 });
           this.setState({ finished: true });
         }
       } else {
@@ -59,12 +61,25 @@ var StudentApp = React.createClass({
     }, 1000);
   },
 
+  sendAnswer: function(selectedAnswer) {
+    $.ajax({
+      url: "/api/teacher/" + this.props.id,
+      dataType: 'json',
+      type: 'POST',
+      data: { questionNum: this.state.questionNum, answer: selectedAnswer },
+      error: (xhr, status, err) => {
+        console.log(err);
+      }
+    });
+  },
+
   render: function() {
     if(!this.state.finished) {
       return (
         <div className="container">
           <div className="timer">{this.state.currentTime}</div>
           <QuestionBlock
+            respond={this.sendAnswer}
             currentTime={this.state.currentTime}
             question={this.state.questions[this.state.questionNum].question}
             answers={this.state.questions[this.state.questionNum].answers}
@@ -90,6 +105,7 @@ var QuestionBlock = React.createClass({
 
   componentWillReceiveProps: function() {
     if(this.props.currentTime == 0) {
+      this.props.respond(this.state.selectedAnswer);
       this.unselect();
     }
   },
