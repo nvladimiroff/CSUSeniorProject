@@ -70,6 +70,7 @@ var StudentApp = React.createClass({
         <div className="container">
           <div className="timer">{this.state.currentTime}</div>
           <QuestionBlock
+            currentTime={this.state.currentTime}
             question={this.state.questions[this.state.questionNum].question}
             answers={this.state.questions[this.state.questionNum].answers}
           />
@@ -86,6 +87,16 @@ var StudentApp = React.createClass({
 var QuestionBlock = React.createClass({
   getInitialState: function() {
     return {question: "", answers: ["?","?","?","?"], selectedAnswer: "X"}
+  },
+
+  unselect: function() {
+    this.setState({ selectedAnswer: "X" });
+  },
+
+  componentWillReceiveProps: function() {
+    if(this.props.currentTime == 0) {
+      this.unselect();
+    }
   },
 
   render: function() {
@@ -132,6 +143,7 @@ var QuestionBlock = React.createClass({
 });
 
 ReactDOM.render(
+  // This needs to not be hardcoded.
   <StudentApp id={2} timeLimit={15} />,
   document.getElementById('content')
 );
