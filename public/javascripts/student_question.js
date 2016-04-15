@@ -19,14 +19,14 @@ var StudentApp = React.createClass({
     return {
       finished: false,
       questionNum: 0,
-      currentTime: this.props.timeLimit,
+      currentTime: this.props.route.timeLimit,
       questions: [{question: "Loading...", answers: ["*", "*", "*", "*"]}]
     };
   },
 
   loadFromServer: function() {
     $.ajax({
-      url: "/api/student/" + this.props.id,
+      url: "/api/student/" + this.props.params.id,
       dataType: 'json',
       type: 'GET',
       success: data => {
@@ -47,7 +47,7 @@ var StudentApp = React.createClass({
       if(this.state.currentTime == 0) {
         // If the time's up, submit the answer and advance to the next question.
         if(this.state.questionNum+1 < this.state.questions.length) {
-          this.setState({ currentTime: this.props.timeLimit});
+          this.setState({ currentTime: this.props.route.timeLimit});
           this.setState({ questionNum: this.state.questionNum+1});
         } else {
           // Hack to get the last question to correctly send.
@@ -63,7 +63,7 @@ var StudentApp = React.createClass({
 
   sendAnswer: function(selectedAnswer) {
     $.ajax({
-      url: "/api/teacher/" + this.props.id,
+      url: "/api/teacher/" + this.props.params.id,
       dataType: 'json',
       type: 'POST',
       data: { questionNum: this.state.questionNum, answer: selectedAnswer },
@@ -154,7 +154,9 @@ var QuestionBlock = React.createClass({
 });
 
 ReactDOM.render(
-  // This needs to not be hardcoded.
-  <StudentApp id={2} timeLimit={15} />,
+  <ReactRouter.Router history={ReactRouter.browserHistory}>
+    <ReactRouter.Route path="/student/:id" timeLimit={15} component={StudentApp}/>
+  </ReactRouter.Router>,
   document.getElementById('content')
 );
+
