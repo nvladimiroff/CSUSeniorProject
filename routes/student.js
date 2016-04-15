@@ -51,6 +51,6 @@ module.exports = (app) => {
   });
 
   app.get('/student/:id', (req, res, next) => {
-    res.render('student_question.html', { id: req.params.id });
+    res.render('student_question.html', {});
   });
 };
