@@ -24,13 +24,25 @@ var StudentApp = React.createClass({
     };
   },
 
+  transformData: function(input) {
+    var output = [];
+    input.forEach(element => {
+      var x = {};
+      x.question = element.name;
+      x.answers = element.Answers.map(y => y.name);
+      output.push(x);
+    });
+
+    return output;
+  },
+
   loadFromServer: function() {
     $.ajax({
-      url: "/api/student/" + this.props.params.id,
+      url: "/questions/question_set/" + this.props.params.id,
       dataType: 'json',
       type: 'GET',
       success: data => {
-        this.setState({questions: data});
+        this.setState({questions: this.transformData(data)});
       }.bind(this),
       error: (xhr, status, err) => {
         console.log(err);
