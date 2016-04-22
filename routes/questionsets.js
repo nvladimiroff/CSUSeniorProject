@@ -4,6 +4,9 @@ var sequelize = new Sequelize('clicker', 'root', 'root', {host: 'localhost', por
 
 // load up the model
 var QuestionSet = require('../models/questionset')(sequelize, Sequelize);
+//var Session = require('../models/session')(sequelize, Sequelize);
+
+//QuestionSet.hasOne(Session);
 
 module.exports = function(app) {
   app.get('/questionsets/owner/:id', function(request, response) {
@@ -22,7 +25,8 @@ module.exports = function(app) {
     QuestionSet.create({
         name: req.body.name,
         description: req.body.description,
-        owner_id: req.body.owner_id
+        owner_id: req.body.owner_id,
+        modified: sequelize.fn('NOW')
     }).then(function(questionsets) {
         res.send({msg : 'success'});
     }).error(function(err) {
@@ -34,7 +38,8 @@ module.exports = function(app) {
     QuestionSet.update({
         name: req.body.name,
         description: req.body.description,
-        owner_id: req.body.owner_id
+        owner_id: req.body.owner_id,
+        modified: sequelize.fn('NOW')
     }).then(function(questionset) {
         res.send({msg : 'success'});
     }).error(function(err) {

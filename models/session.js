@@ -19,7 +19,8 @@ module.exports = function(sequelize, DataTypes) {
         associate: function(models) {
           /*Session.belongsTo(models.SessionLog, {foreignKey: 'id'}),
           Session.belongsTo(models.AnswerLog, {foreignKey: 'id'}),*/
-          Session.belongsTo(models.User, {foreignKey: 'owner_id'})
+          Session.belongsTo(models.User, {foreignKey: 'owner_id'}),
+          Session.hasOne(models.QuestionSet, {foreignKey: 'question_set_id'})
         },
         generateToken: function() {
             return uuid.v1();

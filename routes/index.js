@@ -11,12 +11,15 @@ module.exports = function(app, passport) {
   });
   
   // show question session
-  app.get('/session/:id', isLoggedIn, function(req, res, next) {
-    // TODO add logic here to build session/QuestionSet model and Question/Answer model to send in response
+  app.get('/session/:id/:token/:qs_id/:current_question_id', isLoggedIn, function(req, res, next) {
     res.render('session', {
       user : req.user, // get the user out of session and pass to template
+      session_id: req.params.id,
+      token_val: req.params.token,
+      question_set_id: req.params.qs_id,
+      current_question_id: req.params.current_question_id,
       bodytagclass: 'page-md',
-      pagetitle: 'Question Session'
+      pagetitle: 'Question Set Session'
     });
   });
 

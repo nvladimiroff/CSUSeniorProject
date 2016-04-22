@@ -26,7 +26,8 @@ module.exports = function(app) {
     Question.create({
       name: req.body.name,
       description: req.body.description,
-      question_set_id: req.body.question_set_id/*,
+      question_set_id: req.body.question_set_id,
+        modified: sequelize.fn('NOW')/*,
       img: req.body.img_location*/
     }).then(function(question) {
       Question.findAll({

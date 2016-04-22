@@ -1,7 +1,11 @@
-extends templatelayout
+extends sessionlayout
 
 block content
     input(type='hidden', value=user.username, id='userID')
+    input(type='hidden', value=session_id, id='sessionID')
+    input(type='hidden', value=token_val, id='token')
+    input(type='hidden', value=question_set_id, id='qs_id')
+    input(type='hidden', value=current_question_id, id='curr_q_id')
     |<!-- BEGIN HEADER -->
     |<header class="page-header">
     |    <nav class="navbar" role="navigation">
@@ -69,20 +73,20 @@ block content
     |            <!-- BEGIN BREADCRUMBS -->
     |            <ul class="page-breadcrumb">
     |                <li>
-    |                    <a href="#">Clicker</a>
+    |                    <a href="/">Clicker</a>
     |                </li>
     |                <li>Session</li>
+    li #{token_val}
     |            </ul>
     |            <!-- END BREADCRUMBS -->
     |        </div>
     |        <div class="col-md-12">
     |            <!-- BEGIN PAGE BASE CONTENT -->
     |            <div class="row">
-    |                <div class="col-md-12">
+    |                <div class="col-md-12" id="session_content">
     |                   <!-- BEGIN SESSION CONTENT -->
-    |                       <div>
-    |                           
-    |                       </div>
+    |                       <div id="questionDiv" class="col-md-6"></div>
+    |                       <div class="col-md-6"><div id="mychart" class="chart" style="height: 525px;"> </div> </div>
     |                   <!-- END SESSION CONTENT -->
     |                </div>
     |            </div>

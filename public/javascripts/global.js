@@ -1,7 +1,20 @@
 getQuestionSetList();
+var token = "";
+var session_id = "";
 
 $(document.body).on("click", ".beginSessionForQuestionSet", function() {
-    
+    var qs_id = $(this).attr('class').split(" ")[0].split('_')[1];
+    $.ajax({
+        type: "POST",
+        url: "/sessions",
+        data: {
+            question_set_id: qs_id,
+            owner_id: $("#userID").val()
+        },
+        success: function(data){
+            window.location.href = "/session/"+data.id+"/"+data.token+"/"+qs_id+"/"+data.current_question_id;
+        }
+    });
 });
 
 $(document.body).on('click', '.displayQuestionSetRow', function() {
@@ -52,6 +65,7 @@ $(document.body).on('click', '.deleteQuestionSet', function(){
 
 $(document.body).on("click", ".deleteAnswer", function() {
     var answer_id = $(this).attr('class').split(" ")[2];
+    var question_id = $(this).attr('class').split(" ")[3];
     bootbox.confirm("Are you sure?", function(result) {
         if (result) {
             $.ajax({
@@ -60,6 +74,8 @@ $(document.body).on("click", ".deleteAnswer", function() {
                 success: function(data){
                     if (data.msg === "success") {
                         $("#answer_li_"+answer_id).remove();
+                        var current_answ_count = $("#answ_count_"+question_id).html();
+                        $("#answ_count_"+question_id).html(parseInt(current_answ_count) - 1);
                     } else {
                         alert(data.msg);
                     }
@@ -225,10 +241,16 @@ function getQuestionSetList() {
                                     '<i class="fa fa-angle-down"></i>'+
                                 '</a>'+
                                 '<ul class="dropdown-menu pull-right">'+
-                                    '<li>'+
-                                        '<a href="#" class="beginSession_'+questionSet.id+' beginSessionForQuestionSet">'+
-                                            '<i class="glyphicon glyphicon-share"></i> Start Session </a>'+
-                                    '</li>'+
+                                    '<li>';
+                if (isActiveSession(questionSet.id)) {
+                    html += '<a href="/session/'+session_id+'/'+token+'/'+questionSet.id+'/null">';
+                    html += '<i class="glyphicon glyphicon-share"></i> Resume Session </a>';
+                } else {
+                    html += '<a href="#" class="beginSession_'+questionSet.id+' beginSessionForQuestionSet">';
+                    html += '<i class="glyphicon glyphicon-share"></i> Start Session </a>';
+                }
+                // TODO add logic to check if no questions on question set to not allow to start session
+                html += '</li>'+
                                     '<li>'+
                                         '<a href="#" class="viewQSetQ_'+questionSet.id+' viewQuestionSetQuestions">'+
                                             '<i class="glyphicon glyphicon-edit"></i> View/Edit Questions </a>'+
@@ -255,6 +277,23 @@ function getQuestionSetList() {
             alert("Error parsing user question sets");
         }
     });
+}
+
+function isActiveSession(qs_id) {
+    var isActive = false;
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "/sessions/questionset/"+qs_id,
+        success: function(data){
+            if (data && data.id) {
+                session_id = data.id;
+                token = data.token;
+                isActive = true;
+            }
+        }
+    });
+    return isActive;
 }
 
 $(document.body).on('click', '.viewQuestionSetQuestions', function() {
@@ -305,7 +344,7 @@ $(document.body).on('click', '.viewQuestionSetQuestions', function() {
                     } else {
                         html += '<span style="color:red" class="'+question.id+'_answ_invalid" id="myId_'+answer.id+'"><i class="glyphicon glyphicon-remove-circle"></i></span>';
                     }
-                    html += '<a class="pending deleteAnswer '+answer.id+'" href="#" title="Delete Answer"><i class="fa fa-trash"></i></a>';
+                    html += '<a class="pending deleteAnswer '+answer.id+' '+question.id+'" href="#" title="Delete Answer"><i class="fa fa-trash"></i></a>';
                     html += '</div>'+
                             '<div class="task-content">'+
                                 '<h4 class="uppercase bold">'+
@@ -464,7 +503,7 @@ function addAnswerHtml(answer) {
     } else {
         html += '<span style="color:red" class="'+answer.question_id+'_answ_invalid" id="myId_'+answer.id+'"><i class="glyphicon glyphicon-remove-circle"></i></span>';
     }
-    html += '<a class="pending deleteAnswer '+answer.id+'" href="#"><i class="fa fa-trash"></i></a>';
+    html += '<a class="pending deleteAnswer '+answer.id+' '+answer.question_id+'" href="#"><i class="fa fa-trash"></i></a>';
     html += '</div>'+
             '<div class="task-content">'+
                 '<h4 class="uppercase bold">'+
@@ -491,14 +530,14 @@ function addQuestionHtml(question) {
                             '<div class="list-toggle-title bold">'+question.name+'</div>'+
                             '<div class="badge badge-default pull-right bold">';
     if (question.Answers) {
-        html += question.Answers.length;
+        html += '<span id="answ_count_'+question.id+'">'+ question.Answers.length +'</span>';
     } else {
-        html += "0";
+        html += '<span id="answ_count_'+question.id+'">0</span>';
     }
     html += '</div>'+
-                        '</div>'+
-                    '</a>'+
-                    '<div class="task-list panel-collapse collapse" id="question_id-'+question.id+'"><ul id="answerlist_'+question.id+'">';
+                '</div>'+
+            '</a>'+
+            '<div class="task-list panel-collapse collapse" id="question_id-'+question.id+'"><ul id="answerlist_'+question.id+'">';
     html += '</ul>'+
             '<div class="task-footer bg-grey">'+
                 '<div class="row">'+

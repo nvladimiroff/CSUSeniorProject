@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
         associate: function(models) {
           QuestionSet.hasMany(models.Question, {foreignKey: 'id'}),
-          QuestionSet.belongsTo(models.Session, {foreignKey: 'id'}),
+          //QuestionSet.belongsTo(models.Session, {foreignKey: 'id'}),
           QuestionSet.belongsTo(models.User, {foreignKey: 'owner_id'})
         }
     },

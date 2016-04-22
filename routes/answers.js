@@ -19,7 +19,7 @@ module.exports = function(app) {
       }).then(function(answer) {
         if (answer.id) {
           Answer.update(
-            { is_valid: 0 },
+            { is_valid: 0, modified: sequelize.fn('NOW')},
             {where: {id: answer.id}}
           ).then(function(affectedrows) {}).error(function(err) { });
         }
@@ -32,7 +32,8 @@ module.exports = function(app) {
         description: req.body.description,
         question_id: req.body.question_id,
         is_valid: req.body.is_valid,
-        img: req.body.img_location
+        img: req.body.img_location,
+        modified: sequelize.fn('NOW')
     }).then(function(answer) {
         res.json(answer);
     }).error(function(err) {
