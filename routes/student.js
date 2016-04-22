@@ -12,28 +12,15 @@ module.exports = (app) => {
     res.redirect('/student/' + req.body.code);
   })
 
+  app.post('/api/teacher/:id', (req, res, next) => {
+    console.log("Answer recieved => { id: " + req.params.id +
+                                    ", questionNum: " + req.body.questionNum +
+                                    ", answer: " + req.body.answer + " }");
+
+    res.end("{}");
+  });
+
   app.get('/student/:id', (req, res, next) => {
-    var data = {};
-
-    Question.findOne({
-      where: {
-        question_set_id: req.params.id
-      }
-    }).then(q => {
-      data.question = q.description;
-      return Answer.findAll({
-        where: {
-          question_id: q.id
-        }
-      });
-    }).then(a => {
-      data.answers = {};
-      for(var i = 0; i < a.length; i++) {
-        var item = a[i];
-        data.answers[item.name] = item.description;
-      }
-
-      res.render('student_question.html', data);
-    });
+    res.render('student_question.html', {});
   });
 };
