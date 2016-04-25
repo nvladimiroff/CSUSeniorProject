@@ -12,7 +12,7 @@ module.exports = (app) => {
     res.redirect('/student/' + req.body.code);
   })
 
-  app.post('/api/teacher/:id', (req, res, next) => {
+  app.post('/student/answer/:id', (req, res, next) => {
     console.log("Answer recieved => { id: " + req.params.id +
                                     ", questionNum: " + req.body.questionNum +
                                     ", answer: " + req.body.answer + " }");
