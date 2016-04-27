@@ -27,7 +27,8 @@ var StudentApp = React.createClass({
       finished: false,
       questionNum: 0,
       selectedAnswer: 'X',
-      questions: [{question: "Loading...", answers: ["*", "*", "*", "*"]}]
+      questions: [{question: "Loading...", answers: ["*", "*", "*", "*"]}],
+      session_id: 'X'
     };
   },
 

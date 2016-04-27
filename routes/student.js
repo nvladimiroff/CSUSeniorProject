@@ -17,6 +17,9 @@ module.exports = (app) => {
                                     ", questionNum: " + req.body.questionNum +
                                     ", answer: " + req.body.answer + " }");
 
+    sequelize.query(
+      'insert into answer_log values (id, ' + req.params.id + ', "' + req.body.answer + '", ' + req.body.questionNum + ', NOW(), NOW());'
+    );
     res.end("{}");
   });
 
