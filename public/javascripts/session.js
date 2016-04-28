@@ -7,12 +7,15 @@ $(function(){
     setInterval(getAnswerReport, 10000);
 });
 
+$(document.body).on("click", "#displayAnswer", function(){
+    var q_id = $("div .active").attr("q-id");
+    $("div .my_"+q_id+"_true").fadeIn("slow");
+});
+
 $(document.body).on("click", ".next", function() {
     var pagId = $(".p_active").attr("id"), p_id = pagId.split("_")[1], q_count = pagId.split("_")[2], new_pId = parseInt(p_id)+1;
     if (parseInt(new_pId) >= parseInt(q_count)) {
-        // TODO display end of questions
-        
-        //endSession();
+        endSession();
         return;
     }
     
@@ -64,8 +67,6 @@ function endSession() {
         },
         success: function(data){
             if (data.msg === "success") {
-                console.log("ended");
-                // TODO display pie chart showing total results (maybe)
                 window.location.href = "/";
             } else {
                 console.log(data.msg);
@@ -136,6 +137,11 @@ function getQuestionAndAnswers() {
         url: "/questions/question_set/"+qs_id,
         success: function(questions){
             var html = '';
+            html += '<div class="portlet light"> ';
+            html += '<div class="portlet-title"> <div class="actions"> <div class="btn-group"> ';
+            html += '<a class="btn btn-circle red-sunglo" href="#" onclick="return false;" id="displayAnswer"> <i class="fa fa-plus"></i> Display Answer </a>';
+            html += '</div></div></div>';
+            html += '<div class="portlet-body">';
             $.each( questions, function( key, question ) {
                 var displayVal = "none";
                 if (key == 0) { displayVal = "block"; }
@@ -150,16 +156,16 @@ function getQuestionAndAnswers() {
                     html += '<img width="300" height="300" src="'+question.img+'" />';
                     html += '</div> </div>';
                 }
-                html += '<div class="row"> <div id="answers_'+question.id+'">';
+                html += '<div class="row"> <div id="answers_'+question.id+'" class="col-md-12">';
                 html += '<ol>';
                 $.each( question.Answers, function( key, answer ) {
                     if (answer.name !== "") {
-                        html += '<div class="mt-element-ribbon" id="answer_'+answer.id+'">'+
-                                    '<div class="ribbon ribbon-left ribbon-vertical-left ribbon-shadow ribbon-border-dash-vert ribbon-color-success uppercase '+question.id+'='+answer.is_valid+'" style="display:none">'+
+                        html += '<div class="mt-element-ribbon col-md-6" id="answer_'+answer.id+'">'+
+                                    '<div class="ribbon ribbon-left ribbon-vertical-left ribbon-shadow ribbon-border-dash-vert ribbon-color-success uppercase my_'+question.id+'_'+answer.is_valid+'" style="display:none">'+
                                         '<div class="ribbon-sub ribbon-bookmark"></div>'+
                                         '<i class="fa fa-star"></i>'+
                                     '</div>'+
-                                    '<p class="ribbon-content"><li> <h3><span class="label label-default">'+answer.name+'</span></h3></li></p>'+
+                                    '<p class="ribbon-content"><li> <h3><span>'+answer.name+'</span></h3></li></p>'+
                                 '</div>';
                     }
                     if (answer.img) {
@@ -173,6 +179,7 @@ function getQuestionAndAnswers() {
                 html += '</div></div>';
             });
             html += '<div class="row" id="paginationSection"></div>';
+            html += '</div> </div>';
             $("#questionDiv").html(html);
 
             var tempHtml = '<div class="col-md-10 text-center">';
@@ -192,9 +199,7 @@ function getQuestionAndAnswers() {
             tempHtml += '</ul>';
             tempHtml += '</div>';
             $("#paginationSection").html(tempHtml);
-            if ($('#curr_q_id').val() == null || $('#curr_q_id').val() == "null" ) {
-                updateCurrentQuestionId();
-            }
+            updateCurrentQuestionId();
         }
     });
 }

@@ -5,7 +5,6 @@ block content
     input(type='hidden', value=session_id, id='sessionID')
     input(type='hidden', value=token_val, id='token')
     input(type='hidden', value=question_set_id, id='qs_id')
-    input(type='hidden', value=current_question_id, id='curr_q_id')
     |<!-- BEGIN HEADER -->
     |<header class="page-header">
     |    <nav class="navbar" role="navigation">
@@ -39,15 +38,9 @@ block content
     |                            </button>
     |                        <ul class="dropdown-menu-v2" role="menu">
     |                            <li>
-    |                                <a href="/profile">
+    |                                <a href="/">
     |                                    <i class="icon-user"></i> My Profile
     |                                    <span class="badge badge-danger">1</span>
-    |                                </a>
-    |                            </li>
-    |                            <li>
-    |                                <a href="/sessions">
-    |                                    <i class="icon-rocket"></i> My Sessions
-    |                                    <span class="badge badge-success"> 7 </span>
     |                                </a>
     |                            </li>
     |                            <li class="divider"> </li>

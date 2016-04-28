@@ -12,7 +12,7 @@ $(document.body).on("click", ".beginSessionForQuestionSet", function() {
             owner_id: $("#userID").val()
         },
         success: function(data){
-            window.location.href = "/session/"+data.id+"/"+data.token+"/"+qs_id+"/"+data.current_question_id;
+            window.location.href = "/session/"+data.id+"/"+data.token+"/"+qs_id;
         }
     });
 });
@@ -243,7 +243,7 @@ function getQuestionSetList() {
                                 '<ul class="dropdown-menu pull-right">'+
                                     '<li>';
                 if (isActiveSession(questionSet.id)) {
-                    html += '<a href="/session/'+session_id+'/'+token+'/'+questionSet.id+'/null">';
+                    html += '<a href="/session/'+session_id+'/'+token+'/'+questionSet.id+'">';
                     html += '<i class="glyphicon glyphicon-share"></i> Resume Session </a>';
                 } else {
                     html += '<a href="#" class="beginSession_'+questionSet.id+' beginSessionForQuestionSet">';
