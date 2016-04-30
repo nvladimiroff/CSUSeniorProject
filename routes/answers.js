@@ -40,7 +40,7 @@ module.exports = function(app) {
         res.send({msg : err});
     });
   });
-  
+
   app.delete('/answers/:id', function(req, res) {
     Answer.destroy({
         where: {
@@ -50,6 +50,12 @@ module.exports = function(app) {
         res.send({msg : 'success'});
     }).error(function(err) {
         res.send({msg : err});
+    });
+  });
+
+  app.get('/answer/getanswers/:id', function(request, response) {
+    sequelize.query('select * from answers where question_id = (select current_question_id from sessions where id=(select max(id) from sessions where question_set_id =' + request.params.id + '))' ).spread(function(data, meta) {
+      response.json(data);
     });
   });
 };

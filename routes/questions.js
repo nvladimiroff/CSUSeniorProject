@@ -21,7 +21,7 @@ module.exports = function(app) {
           throw err;
       });
   });
-  
+
   app.post('/questions', function(req, res) {
     Question.create({
       name: req.body.name,
@@ -44,7 +44,7 @@ module.exports = function(app) {
       res.send({msg : err});
     });
   });
-  
+
   app.delete('/questions/:id', function(req, res) {
     Question.destroy({
         where: {
@@ -56,4 +56,11 @@ module.exports = function(app) {
         res.send({msg : err});
     });
   });
+
+  app.get('/questions/getcurrent/:id', function(request, response) {
+    sequelize.query('select * from questions where id = (select current_question_id from sessions where id=(select max(id) from sessions where question_set_id =' + request.params.id + '))' ).spread(function(data, meta) {
+      response.json(data);
+    });
+  });
+
 };

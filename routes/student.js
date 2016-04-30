@@ -13,14 +13,10 @@ module.exports = (app) => {
   })
 
   app.post('/student/answer/:id', (req, res, next) => {
-    console.log("Answer recieved => { id: " + req.params.id +
-                                    ", questionNum: " + req.body.questionNum +
-                                    ", answer: " + req.body.answer + " }");
-
     sequelize.query(
-      'insert into answer_log values (id, ' + req.params.id + ', "' + req.body.answer + '", ' + req.body.questionNum + ', NOW(), NOW());'
+      'insert into answer_log values (id, ' + req.params.id + ', "X", ' + req.body.answer + ', NOW(), NOW())'
     );
-    res.end("{}");
+    res.send({msg: "success"});
   });
 
   app.get('/student/:id', (req, res, next) => {

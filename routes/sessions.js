@@ -23,7 +23,7 @@ module.exports = function(app) {
             res.send({msg : err});
         });
     });
-    
+
     app.get('/sessions/questionset/:id', function(request, response) {
         Session.findOne({
             where: {
@@ -36,16 +36,16 @@ module.exports = function(app) {
             throw err;
         });
     });
-    
+
     app.get('/sessions/responses/:qid', function(request, response) {
-        sequelize.query(
-            'select (select name from answers a where a.id = answer_log.answer_id) as answer, count(answer_id) as count from answer_log where answer_id IN(select id from answers where question_id = '+request.params.qid+') group by answer_id order by answer_id'
-        ).then(function(data){
+      sequelize.query(
+        'select (select name from answers a where a.id = answer_log.answer_id) as answer, count(answer_id) as count from answer_log where answer_id IN(select id from answers where question_id = '+request.params.qid+') group by answer_id order by answer_id'
+        ).spread(function(data, meta){
             console.log("results: "+stringify(data));
             response.json(data);
         });
     });
-    
+
     app.put('/sessions', function(req, res) {
         Session.update(
             { current_question_id: req.body.current_question_id, modified: sequelize.fn('NOW') },
@@ -56,7 +56,7 @@ module.exports = function(app) {
             res.send({msg : err});
         });
     });
-    
+
     app.put('/sessions/changequestion', function(req, res) {
         Session.update(
             { current_question_id: req.body.current_question_id, modified: sequelize.fn('NOW') },
@@ -67,7 +67,7 @@ module.exports = function(app) {
             res.send({msg : err});
         });
     });
-    
+
     app.put('/sessions/endset', function(req, res) {
         Session.update(
             { current_question_id: null, is_active: 0, status: 0, modified: sequelize.fn('NOW') },

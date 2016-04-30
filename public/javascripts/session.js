@@ -1,10 +1,11 @@
+var chart;
 
 $( window ).load(function() {
     getQuestionAndAnswers();
 });
 
 $(function(){
-    setInterval(getAnswerReport, 10000);
+    setInterval(getAnswerReport, 1000);
 });
 
 $(document.body).on("click", "#displayAnswer", function(){
@@ -18,7 +19,7 @@ $(document.body).on("click", ".next", function() {
         endSession();
         return;
     }
-    
+
     var htmlId = $("div .active").attr("id"),
         q_id = htmlId.split("_")[1],
         newQuestion = parseInt(q_id)+1,
@@ -28,12 +29,12 @@ $(document.body).on("click", ".next", function() {
     $("#"+htmlId).fadeOut("fast");
     $(newHtmlId).fadeIn("slow");
     $(newHtmlId).addClass("active");
-    
+
     $("#"+pagId).removeClass("active");
     $("#"+pagId).removeClass("p_active");
     $("#pagin_"+new_pId+"_"+q_count).addClass("active");
     $("#pagin_"+new_pId+"_"+q_count).addClass("p_active");
-    
+
     changeQuestion();
 });
 
@@ -54,7 +55,7 @@ function changeQuestion() {
             }
         }
     });
-    
+
     updateCurrentQuestionId();
 }
 
@@ -83,14 +84,15 @@ function getAnswerReport() {
         success: function(data){
             console.log(data);
             if (data.length > 0) {
-                var chart = AmCharts.makeChart("mychart", {
+                chart = AmCharts.makeChart("mychart", {
                     "type": "pie",
                     "theme": "light",
-            
+                    "startDuration": 0,
+
                     "fontFamily": 'Open Sans',
-                    
+
                     "color":    '#888',
-            
+
                     "dataProvider": data,
                     "valueField": "count",
                     "titleField": "answer",
@@ -123,6 +125,9 @@ function updateCurrentQuestionId() {
         success: function(data){
             if (data.msg === "success") {
                 console.log("current_question_id: "+ q_id+ "updated");
+                if(chart) {
+                  chart.clear();
+                }
             } else {
                 console.log(data.msg);
             }

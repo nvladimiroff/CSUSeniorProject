@@ -25,38 +25,41 @@ var StudentApp = React.createClass({
     return {
       started: false,
       finished: false,
-      questionNum: 0,
-      selectedAnswer: 'X',
-      questions: [{question: "Loading...", answers: ["*", "*", "*", "*"]}],
-      session_id: 'X'
+      locked: false,
+      question: "Loading...",
+      answers: [Array(4).fill({name:"*", id:-1})],
+      selectedAnswer: 'X'
     };
-  },
-
-  transformData: function(input) {
-    var output = [];
-    input.forEach(element => {
-      var x = {};
-      x.question = element.name;
-      x.answers = element.Answers.map(y => y.name);
-      output.push(x);
-    });
-
-    return output;
   },
 
   loadSetFromServer: function() {
     $.ajax({
-      url: "/questions/question_set/" + this.props.params.id,
+      url: "/questions/getcurrent/" + this.props.params.id,
       dataType: 'json',
       type: 'GET',
       success: data => {
-        this.setState({questions: this.transformData(data)});
+        if(! _.isEqual(data[0], this.state.question)) {
+          this.unselect();
+          this.unlock();
+          this.setState({question: data[0]});
+        }
       }.bind(this),
       error: (xhr, status, err) => {
         console.log(err);
       }
     });
-  },
+    $.ajax({
+     url: "/answer/getanswers/" + this.props.params.id,
+     dataType: 'json',
+     type: 'GET',
+     success: data => {
+       this.setState({answers: data});
+     }.bind(this),
+     error: (xhr, status, err) => {
+       console.log(err);
+     }
+   });
+ },
 
   loadInfoFromServer: function(success) {
     $.ajax({
@@ -71,47 +74,20 @@ var StudentApp = React.createClass({
     this.loadSetFromServer();
     this.loadInfoFromServer( data => {
       this.setState({ started: data.is_active });
-      if(this.state.started) {
-        // What we get from the server is 2 off for some reason.
-        this.setState({ questionNum: data.current_question_id-2 });
-      }}.bind(this)
-    );
+    }.bind(this));
   },
 
   componentDidMount: function() {
     setInterval(() => {
+      this.loadSetFromServer();
       this.loadInfoFromServer(data => {
-        this.setState({ started: data.is_active });
-        if(this.state.started) {
-          if((data.current_question_id-2) !== this.state.questionNum) {
-            // The professor went to a new question, so send the answer.
-            this.sendAnswer();
-            this.unselect();
-          }
-          this.setState({ questionNum: data.current_question_id-2 });
+        if(data === null && this.state.started) {
+          this.setState({ finished: true });
+        } else if(data !== null) {
+          this.setState({ started: data.is_active });
         }
       }.bind(this));
     }, 1000);
-  },
-
-  sendAnswer: function() {
-    $.ajax({
-      url: "/student/answer/" + this.props.params.id,
-      dataType: 'json',
-      type: 'POST',
-      data: { questionNum: this.state.questionNum, answer: this.state.selectedAnswer },
-      error: (xhr, status, err) => {
-        console.log(err);
-      }
-    });
-  },
-
-  unselect: function() {
-    this.setState({ selectedAnswer: 'X' });
-  },
-
-  respond: function(answer) {
-    this.setState({ selectedAnswer: answer });
   },
 
   render: function() {
@@ -127,48 +103,59 @@ var StudentApp = React.createClass({
       return (
         <div className="container">
           <QuestionBlock
+            id={this.props.params.id}
             respond={this.respond}
+            locked={this.state.locked}
             selectedAnswer={this.state.selectedAnswer}
-            question={this.state.questions[this.state.questionNum].question}
-            answers={this.state.questions[this.state.questionNum].answers}
+            question={this.state.question}
+            answers={this.state.answers}
           />
         </div>
       );
     }
   },
+
+  respond: function(letter) {
+    this.setState({ selectedAnswer: letter });
+    this.setState({ locked: true });
+  },
+
+  unselect: function() {
+    this.setState({ selectedAnswer: 'X' });
+  },
+
+  unlock: function() {
+    this.setState({ locked: false });
+  }
 });
 
 var QuestionBlock = React.createClass({
   render: function() {
+    let letters = ["A", "B", "C", "D"];
+    let answers = []
+    for(var i=0; i < this.props.answers.length; i++) {
+      answers.push(
+       <Answer
+         onClick={this.click(letters[i]).bind(this)}
+         selected={this.props.selectedAnswer == letters[i]}
+         letter={letters[i]}
+         answer={this.props.answers[i].name}/>
+      );
+    }
+
     return (
       <div className="container">
         <div className="question-block">
-          <h1 className="question-header">{this.props.question}</h1>
+          <h1 className="question-header">{this.props.question.name}</h1>
         </div>
         <div className="answers">
           <div className="row">
-            <Answer
-              onClick={this.click("A").bind(this)}
-              selected={this.props.selectedAnswer == "A"}
-              letter="A"
-              answer={this.props.answers[0]}/>
-            <Answer
-              onClick={this.click("B").bind(this)}
-              selected={this.props.selectedAnswer == "B"}
-              letter="B"
-              answer={this.props.answers[1]}/>
+            {answers[0] ? answers[0] : ""}
+            {answers[1] ? answers[1] : ""}
           </div>
           <div className="row">
-            <Answer
-              onClick={this.click("C").bind(this)}
-              selected={this.props.selectedAnswer == "C"}
-              letter="C"
-              answer={this.props.answers[2]}/>
-            <Answer
-              onClick={this.click("D").bind(this)}
-              selected={this.props.selectedAnswer == "D"}
-              letter="D"
-              answer={this.props.answers[3]}/>
+            {answers[2] ? answers[2] : ""}
+            {answers[3] ? answers[3] : ""}
           </div>
         </div>
       </div>
@@ -177,9 +164,23 @@ var QuestionBlock = React.createClass({
 
   click: function(letter) {
     return function() {
-      this.props.respond(letter);
-    };
-  }
+      if(!this.props.locked) {
+        let answerId = this.props.answers[letter.charCodeAt(0)-65]
+        this.setState({notAnswered: false});
+
+        $.ajax({
+          url: "/student/answer/" + this.props.id,
+          dataType: 'json',
+          type: 'POST',
+          data: { answer: answerId.id },
+          error: (xhr, status, err) => {
+            console.log(err);
+          }
+        });
+        this.props.respond(letter);
+      }
+    }
+  },
 });
 
 ReactDOM.render(
