@@ -10,7 +10,7 @@ cd CSUSeniorProject
 npm install
 ```
 
-Then create the databse and execute all of the mysql schema files with:
+Then create the database and execute all of the mysql schema files with:
 ```
 for i in ./mysql_schema_files/* ; do mysql --user="username" --password="pass" --database="clicker" < $i; done
 ```
