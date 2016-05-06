@@ -58,7 +58,7 @@ module.exports = function(app) {
   });
 
   app.get('/questions/getcurrent/:id', function(request, response) {
-    sequelize.query('select * from questions where id = (select current_question_id from sessions where id=(select max(id) from sessions where question_set_id =' + request.params.id + '))' ).spread(function(data, meta) {
+    sequelize.query('select * from questions where id = (select current_question_id from sessions where id=(select max(id) from sessions where id =' + request.params.id + '))' ).spread(function(data, meta) {
       response.json(data);
     });
   });
